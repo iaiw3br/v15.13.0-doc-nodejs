@@ -1,6 +1,7 @@
 const os = require('os');
 const path = require('path');
 const events = require('events');
+const util = require('util');
 const {show} = require('../helper');
 /*
 * Process это глобальный объект предоставляющий информацию о текущем процессе Node.js и контролирует его.
@@ -462,3 +463,449 @@ const {show} = require('../helper');
 // process.env.hello = 'Hi';
 // delete process.env.hello;
 // show(process.env.hello); // undefined
+
+
+/*
+* process.execArgv
+* Возвращает набор параметров командной строки переданных при запуске процесса.
+* */
+// node --harmony index
+// show(process.execArgv); ['--harmony']]
+
+
+/*
+* process.execPath
+* Возвращает абсолютный путь до node.exe
+* */
+// show(process.execPath);
+// C:\Program Files\nodejs\node.exe
+
+
+/*
+* process.exit([code])
+* Завершает процесс node.js со статусом, указанным в коде.
+* */
+// show('h') // h
+// process.exit(2);
+// show('i') // это уже отобразится.
+
+
+/*
+* process.exitCode
+* Число, которое будет кодом выхода процесса, когда процесс завершается без указания кода
+* process.exit()
+* */
+
+
+/*
+* process.getegid()
+* Возвращает числовой идентификатор процесса группы node.js
+* */
+// show(process.getegid());
+
+
+/*
+* process.geteuid()
+* возвращает числовой идентификатор пользователя процесса.
+* */
+// show(process.geteuid())
+
+
+/*
+* process.getgroups()
+* Массив с дополнительными идентификаторами групп
+* */
+// show(process.getgroups());
+
+
+/*
+* process.hasUncaughtExceptionCaptureCallback()
+* установлен ли обратный вызов для process.setUncaughtExceptionCaptureCallback().
+* */
+// show(process.hasUncaughtExceptionCaptureCallback()) // false
+
+
+/*
+* process.hrtime([time]) (устаревшее)
+* Возвращает текущее время с высоким разрешением в массиве кортежей [ секунды, наносекунды ]
+*
+* */
+// const NS_PER_SEC = 1e9;
+// const time = process.hrtime();
+// show(time); // [ 1047020, 124322000 ]
+//
+// setTimeout(() => {
+//     const diff = process.hrtime(time);
+//     show(diff); // [ 1, 15056900 ]
+//
+//     show(`Benchmark took ${diff[0] * NS_PER_SEC + diff[1]} nanoseconds`);
+//     // Benchmark took 1011877800 nanoseconds
+//
+// }, 1000);
+
+
+/*
+* process.hrtime.bigint()
+* Возвращает текущее время с высоким разрешением в bigint
+* */
+// const start = process.hrtime.bigint();
+// show(start); // 1047098179142700n
+// setTimeout(() => {
+//     const end = process.hrtime.bigint();
+//     show(end); // 1047099193483500n
+//     console.log(`Benchmark took ${end - start} nanoseconds`);
+//     // Benchmark took 1014340800 nanoseconds
+// }, 1000);
+
+
+/*
+* process.initgroups(user, extraGroup)
+* считывает файл и инициализирует список доступа группы.
+* */
+// show(process.getgroups())
+
+
+/*
+* process.kill(pid[, signal])
+* Отправляет сигнал по pid и убивает его.
+* */
+// process.on('SIGINT', () => show('SIGINT'));
+// setTimeout(() => {
+//     show('setTimeout');
+//     process.exit(0);
+// }, 1000);
+// show(process.pid); // 14824
+// process.kill(process.pid, 'SIGINT');
+
+
+/*
+* process.memoryUsage()
+* Возвращает объект, описывающий использование памяти процессом node.js измеренное в байтах.
+* */
+// show(process.memoryUsage());
+// {
+//     rss: 18595840,
+//     heapTotal: 4317184,
+//     heapUsed: 3483640,
+//     external: 289994,
+//     arrayBuffers: 33420
+// }
+
+
+/*
+* process.memoryUsage.rss()
+* Возвращает число RSS в байтах
+* тоже самое, что и memoryUsage, но текущий работает быстрее.
+* */
+// show(process.memoryUsage.rss()) //18636800
+
+
+/*
+* When use queueMicrotask() vs process.nextTick()
+* queueMicrotask() аналог process.nextTick()
+* */
+// Promise.resolve().then(() => show(2));
+// queueMicrotask(() => show(3));
+// process.nextTick(() => show(1));
+// 1, 2, 3
+/*
+* разница в том, что nextTick() позволяет указывать дополнительные значения, которые будут
+* передаваться в качестве аргументов отложенной функции при её вызове.
+* */
+
+
+/*
+* process.noDeprecation
+* Указывает установлен ли флаг --no-deprecation при запуске node.js
+* */
+// node --no-deprecation index
+// show(process.noDeprecation) // true
+
+
+/*
+* process.pid
+* Возвращает pid процесс
+* */
+// show(process.pid); // 7396
+
+
+/*
+* process.platform
+* Показывает идентификатор операционной системы, в которой запущена node.js
+* */
+// show(process.platform);
+
+
+/*
+* process.ppid
+* Возвращает pid родительского процесса
+* */
+// show(process.ppid); // 1864
+
+
+/*
+* process.release
+* Релиз node.js
+* */
+// show(process.release);
+// {
+//     name: 'node',
+//     sourceUrl: 'https://nodejs.org/download/release/v15.13.0/node-v15.13.0.tar.gz',
+//     headersUrl: 'https://nodejs.org/download/release/v15.13.0/node-v15.13.0-headers.tar.gz',
+//     libUrl: 'https://nodejs.org/download/release/v15.13.0/win-x64/node.lib'
+// }
+
+
+/*
+* process.report
+* генерация диагностических отчётов для текущего процесса
+* */
+// show(process.report);
+// {
+//     writeReport: [Function: writeReport],
+//     getReport: [Function: getReport],
+//     directory: [Getter/Setter],
+//     filename: [Getter/Setter],
+//     compact: [Getter/Setter],
+//     signal: [Getter/Setter],
+//     reportOnFatalError: [Getter/Setter],
+//     reportOnSignal: [Getter/Setter],
+//     reportOnUncaughtException: [Getter/Setter]
+// }
+
+
+/*
+* process.report.compact
+* Компактная версия отчёта?
+* */
+// show(process.report.compact); // false
+
+
+/*
+* process.report.directory
+* Справочник, в котором написан отчёт
+* */
+// show(process.report.directory)
+
+
+/*
+* process.report.filename
+* файл, в котором указан отчёт
+* */
+// show(process.report.filename)
+
+
+/*
+* process.report.getReport([err])
+* Возвращает объект диагностического отчёта
+* */
+// const data = process.report.getReport();
+// show(data.header.nodejsVersion);
+// const fs = require('fs');
+// fs.writeFileSync(util.inspect(data), 'my-report.log', 'utf8');
+
+
+/*
+* process.report.reportOnFatalError
+* true если отчёт создаётся при фатальных ошибка (нехватка памяти, неудачные утверждения c++)
+* */
+// show(process.report.reportOnFatalError); // false
+
+
+/*
+* process.report.reportOnSignal
+* true когда диагностический отчёт создаётся, когда процесс получает сигнал process.report.signal.
+* */
+// show(process.report.reportOnSignal); // false
+
+
+/*
+* process.report.reportOnUncaughtException
+* true когда отчёт создаётся о неперехваченном исключении.
+* */
+
+
+/*
+* process.report.signal
+* Сигнал для запуска создания диагностического отчёта. По умолчанию SIGUSR2
+* */
+
+
+/*
+* process.report.writeReport([filename][, err])
+* Записывает диагностический отчёт в файл.
+* */
+// process.report.writeReport(); // создался report.20210406.214151.7320.0.001.json
+
+
+/*
+* process.resourceUsage()
+* Использование ресурсов для текущего процесса.
+* */
+// show(process.resourceUsage());
+// {
+//     userCPUTime: 62000,
+//     systemCPUTime: 31000,
+//     maxRSS: 18360,
+//     sharedMemorySize: 0,
+//     unsharedDataSize: 0,
+//     unsharedStackSize: 0,
+//     minorPageFault: 0,
+//     majorPageFault: 5174,
+//     swappedOut: 0,
+//     fsRead: 2,
+//     fsWrite: 0,
+//     ipcSent: 0,
+//     ipcReceived: 0,
+//     signalsCount: 0,
+//     voluntaryContextSwitches: 0,
+//     involuntaryContextSwitches: 0
+// }
+
+
+/*
+* process.send(message[, sendHandle[, options]][, callback])
+* если процесс создаётся с каналом IPC, текущий метод способен отправить сообщения в родительский процесс.
+* Если родительского процесса нет - undefined
+* */
+
+
+/*
+* process.setegid(id)
+* Устанавливает эффективный групповой идентификатор процесса.
+* */
+
+
+/*
+* process.seteuid(id)
+* устанавливает эффективную идентификацию пользователя процесса.
+* */
+
+
+/*
+* process.setgid(id)
+* устанавливает групповой идентификатор процесса
+* */
+
+
+/*
+* process.setgroups(groups)
+* идентификаторы дополнительных групп для процесса node.js
+* */
+
+
+/*
+* process.setuid(id)
+* идентификатор пользователя процесса.
+* */
+
+
+/*
+* process.setUncaughtExceptionCaptureCallback(fn)
+* устанавливает функцию, которая будет вызываться при возникновении неперехваченного исключения,
+* которое получит само значение исключения в качестве первого аргумента.
+* */
+
+
+/*
+* process.stderr
+* возвращает поток.
+* */
+
+
+/*
+* process.stderr.fd
+* свойство относится к stderr, в рабочих потоках не работает.
+* */
+
+
+/*
+* process.stdin
+* поток подключенных stdin
+* */
+
+
+/*
+* process.stdin.fd
+* свойство относится к stdin
+* */
+
+/*
+* process.stdout
+* поток подключенный к stdout
+* */
+
+
+/*
+* process.stdout.fd
+* свойство stdout
+* */
+
+
+/*
+* Замечания по поводу I/0 процесса
+* stdout и stderr отличаются от других процессов node.js
+* Они используются внутри console.log(), console.error()
+* Записи могут быть синхронными
+* */
+
+
+/*
+* process.title
+* возвращает название текущего процесса.
+* */
+
+
+/*
+* process.traceDeprecation
+* установлен ли флаг --trace-deprecation для текущего процесса
+* */
+
+
+/*
+* process.umask(mask)
+* устанавливает маску создания файлового режима процесса node.js
+* */
+// const newMask = 0o022;
+// const oldMask = process.umask(newMask);
+// show(`Changed umask from ${oldMask.toString(8)} to ${newMask.toString(8)}`);
+// Changed umask from 0 to 22
+
+
+/*
+* process.uptime()
+* Возвращает количество секунд, в течение которых выполнялся текущий процесс node.js
+* */
+
+
+/*
+* process.version
+* версия node.js, аналог node -v
+* */
+// show(process.version); //15.13.0
+
+
+/*
+* process.versions
+* объект версии nodejs с зависимостями
+* */
+// show(process.versions);
+// {
+//     node: '15.13.0',
+//     v8: '8.6.395.17-node.28',
+//     uv: '1.41.0',
+//     zlib: '1.2.11',
+//     brotli: '1.0.9',
+//     ares: '1.17.1',
+//     modules: '88',
+//     nghttp2: '1.42.0',
+//     napi: '8',
+//     llhttp: '2.1.3',
+//     openssl: '1.1.1j+quic',
+//     cldr: '38.1',
+//     icu: '68.2',
+//     tz: '2020d',
+//     unicode: '13.0',
+//     ngtcp2: '0.1.0-DEV',
+//     nghttp3: '0.1.0-DEV'
+// }
