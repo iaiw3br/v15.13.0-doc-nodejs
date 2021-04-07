@@ -1,4 +1,5 @@
 const http = require('http');
+const {show} = require('../helper');
 /*
 * Для использования необходимо подключить http через require.
 * HTTP интерфейс в node.js для поддержки многих функции протокола, которые традиционно было трудно поддерживать.
@@ -22,5 +23,273 @@ const http = require('http');
 
 /*
 * Class: http.Agent
-*
+* Отвечает за управление сохранением и повторным использованием соединения для клиентов HTTP.
+* Очередь отправленных запросов для получения хоста и порта, повторное использование одного соединения сокета
+* пока очередь не станет пустой. В этот момент сокет уничтожается либо помещается в пул, где сохраняется для
+* повторного использования для запросов к тому же хосту и порту.
+* Агент может использоваться для индивидуального запроса
+* */
+// http.get({
+//     hostname: 'localhost',
+//     port: 80,
+//     path: '/',
+//     agent: false, // Create a new agent for this one request
+// }, res => {
+//     // some logic
+// });
+
+
+/*
+* new Agent([options])
+* Можно настроить агент
+* */
+// const keepAliveAgent = new http.Agent({ keepAlive: true });
+// options.agent = keepAliveAgent;
+// http.request(options, onResponseCallback);
+
+
+/*
+* agent.createConnection(options[, callback])
+* Создаёт поток, сокет, который будет использоваться для запросов HTTP.
+* */
+// const agent = new http.Agent({});
+// const createConnection = agent.createConnection;
+// show(createConnection.toString());
+// function connect(...args) {
+//     const normalized = normalizeArgs(args);
+//     const options = normalized[0];
+//     debug('createConnection', normalized);
+//     const socket = new Socket(options);
+//
+//     if (options.timeout) {
+//         socket.setTimeout(options.timeout);
+//     }
+//
+//     return socket.connect(normalized);
+// }
+
+
+/*
+* agent.keepSocketAlive(socket)
+* Вызывается, когда сокет отключается от запроса и может быть сохранён агентом.
+* */
+
+
+/*
+* agent.reuseSocket(socket, request)
+* Вызывается, когда сокет присоединяется к запросу после сохранения из-за параметров активности.
+* */
+
+
+/*
+* agent.destroy()
+* Уничтожить все сокеты, используемые агентом.
+* */
+
+
+/*
+* agent.freeSockets
+* Массив активных сокетов.
+* */
+
+
+/*
+* agent.getName(options)
+* Получить уникальное имя для набора параметров запроса, чтобы определить, можно ли повторно
+* использовать соединение.
+* */
+
+
+/*
+* agent.maxFreeSockets
+* По умолчанию 256
+* */
+
+
+/*
+* agent.maxSockets
+* По умолчанию Infinity
+* */
+
+
+/*
+* agent.maxTotalSockets
+* По умолчанию Infinity. Сколько сокетов может быть открыто у агента.
+* */
+
+
+/*
+* agent.requests
+* Объект, содержащий очереди запросов, которые не были назначены сокетам
+* */
+
+
+/*
+* agent.sockets
+* Объект, который содержит массив сокетов, используемых в данный момент агентом.
+* */
+
+
+/*
+* Class: http.ClientRequest
+* Объект создан внутри и возвращён из http.request()
+* Представляет незавершенный запрос, заголовок которого уже поставлен в очередь. Заголовок может быть
+* изменён используя setHeader(name, value), getHeader(name), removeHeader(name).
+* Чтобы получить ответ, нужно добавить слушателя для response для объекта запроса response будет вызван запрос
+* объекта, когда заголовок ответа будут получены.
+* */
+
+
+/*
+* Event: 'abort'
+* Вызывается, когда запрос был прекращен клиентом. Это событие вызовется один раз при первом вызове abort()
+* */
+
+
+/*
+* Event: 'connect'
+* Вызывается каждый раз когда сервер отвечает на запрос с помощью метода CONNECT. Если это событие не прослушивается
+* то клиенты получающие connect, соединения будут закрыты.
+* Этому событию гарантировано будет передано событие net.Socket
+* */
+// const server = http.createServer((req, res) => {
+//     res.writeHead(200, {'Content-Type': 'text/plain'});
+//     res.end('ok');
+// });
+//
+// server.on('connection', (req, socket, head) => {
+//     console.log(req)
+//     console.log(socket)
+//     console.log(head)
+// }).listen(3000)
+
+
+/*
+* Event: 'continue'
+* Вызывается, когда сервер отправляет '100 Continue HTTP запрос, обычно потому что запрос включает
+* 'Expect: 100-continue'.
+* */
+
+
+/*
+* Event: 'information'
+* Вызывается, когда сервер отправляет 1xx ответ (кроме 101 обновление).
+* */
+// const options = {
+//     host: 'localhost',
+//     port: 3000,
+//     path: '/hi',
+// }
+// const req = http.request(options);
+// req.end();
+//
+// req.on('information', info => show(info.statusCode));
+
+
+/*
+* Event: 'response'
+* Вызывается, когда ответ получает этот запрос. Событие срабатывает только один раз.
+* */
+
+
+/*
+* Event: 'timeout'
+* Вызывается, когда сокет выходит из строя по истечении времени ожидания. Это только уведомление и такой сокет
+* надо закрыть вручную.
+* */
+
+
+/*
+* Event: 'upgrade'
+* Вызывается каждый раз, когда сервер отправляет запрос с обновлением.
+* */
+// const server = http.createServer((req, res) => {
+//     res.writeHead(200, { 'Content-Type': 'text/plain' });
+//     res.end('okay');
+// });
+// server.on('upgrade', (req, socket, head) => {
+//     socket.write('HTTP/1.1 101 Web Socket Protocol Handshake\r\n' +
+//         'Upgrade: WebSocket\r\n' +
+//         'Connection: Upgrade\r\n' +
+//         '\r\n');
+//
+//     socket.pipe(socket); // echo back
+// });
+// server.listen(1337, '127.0.0.1', () => {
+//
+//     // make a request
+//     const options = {
+//         port: 1337,
+//         host: '127.0.0.1',
+//         headers: {
+//             'Connection': 'Upgrade',
+//             'Upgrade': 'websocket'
+//         }
+//     };
+//
+//     const req = http.request(options);
+//     req.end();
+//
+//     req.on('upgrade', (res, socket, upgradeHead) => {
+//         console.log('got upgraded!');
+//         socket.end();
+//         process.exit(0);
+//     });
+// });
+
+
+/*
+* request.aborted
+* true если запрос был прерван.
+* */
+
+
+/*
+* request.end([data[, encoding]][, callback])
+* Завершает отправку запроса. Если какие-то части тела не отправлены, он смывает их в поток.
+* Если есть какие-то данные ты вызовется request.write(), а затем request.end()
+* */
+
+
+/*
+* request.destroy([error])
+* Разрушает запрос.
+* */
+
+
+/*
+* request.destroyed
+* true после request.destroy()
+* */
+
+
+/*
+* request.flushHeaders()
+* Очищает заголовки запроса.
+* node.js обычно буферизирует заголовки запроса внутри request.end(). Затем пытается упаковать заголовки
+* внутри TCP пакета.
+* */
+
+
+/*
+* request.getHeader(name)
+* Читает заголовок запроса.
+* */
+
+
+/*
+* request.getRawHeaderNames()
+* Возвращает массив уникальных имён с учетом регистра.
+* */
+
+
+/*
+* request.maxHeadersCount
+* По умолчанию 2000, максимальный лимит заголовков ответа.
+* */
+
+
+/*
+* request.path
+* Путь запроса
 * */
