@@ -293,3 +293,41 @@ const {show} = require('../helper');
 * request.path
 * Путь запроса
 * */
+
+
+/*
+* request.removeHeader(name)
+* Удаляет заголовок, который находится внутри объекта заголовка.
+* */
+// request.removeHeader('Content-Type');
+
+
+/*
+* request.reusedSocket
+* true если отправляется запрос через используемое соединение.
+* */
+// http.createServer((req, res) => {
+//     res.write('hello');
+//     res.end();
+// }).listen(3000);
+//
+// setInterval(() => {
+//     http.get('http://localhost:3000',res => {
+//         res.on('data', data => {
+//             show(data.toString());
+//         });
+//     });
+// }, 5000);
+
+
+/*
+* request.setHeader(name, value)
+* Устанавливает заголовок. Если заголовок уже есть, то он заменится.
+* */
+// request.setHeader('Content-Type', 'application/json');
+// request.setHeader('Cookie', ['type=ninja', 'language=javascript']);
+
+
+/*
+*
+* */
