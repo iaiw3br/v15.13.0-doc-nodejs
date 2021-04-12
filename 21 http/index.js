@@ -329,5 +329,29 @@ const {show} = require('../helper');
 
 
 /*
+* http.validateHeaderName(name)
+* Проверяет корректность имени в заголовке
+* */
+// const { validateHeaderName } = require('http');
+//
+// try {
+//     validateHeaderName('');
+// } catch (err) {
+//     err instanceof TypeError; // --> true
+//     err.code; // --> 'ERR_INVALID_HTTP_TOKEN'
+//     err.message; // --> 'Header name must be a valid HTTP token [""]'
+// }
+
+
+/*
+* http.validateHeaderValue(name, value)
 *
 * */
+// const { validateHeaderValue } = require('http');
+// try {
+//     validateHeaderValue('x-my-header', undefined);
+// } catch (err) {
+//     err instanceof TypeError; // --> true
+//     err.code === 'ERR_HTTP_INVALID_HEADER_VALUE'; // --> true
+//     err.message; // --> 'Invalid value "undefined" for header "x-my-header"'
+// }
