@@ -91,3 +91,34 @@ const url = require('url');
 // const myURL = new URL('https://example.org/abc/xyz?123');
 // console.log(myURL.pathname);
 // Prints /abc/xyz
+
+
+/*
+* url.search
+* */
+// const myURL = new URL('https://example.org/abc?123');
+// console.log(myURL.search);
+// Prints ?123
+
+
+/*
+* url.searchParams
+* */
+// const myUrl = new URL('https://example.org/abc?foo=~bar');
+// console.log(myUrl.search);  // prints ?foo=~bar
+
+
+/*
+* url.toJSON()
+*
+* */
+// const myUrl = new URL('https://example.org/abc?foo=~bar');
+// console.log(myUrl.toJSON());
+
+
+/*
+* new URLSearchParams(string)
+* */
+// params = new URLSearchParams('user=abc&query=xyz');
+// console.log(params.get('user'));
+// Prints 'abc'
