@@ -1,5 +1,6 @@
 const stream = require('stream');
 const fs = require('fs');
+const http = require('http');
 /*
 * Потоки это абстрактный интерфейс для работы с потоками данными в Node.js.
 * Все потоки являются EventEmitter-ами.
@@ -45,4 +46,56 @@ const fs = require('fs');
 * highWaterMark это порог, а не лимит. Он определяет объём данных, которые поток буферизирует, прежде чем он
 * перестанет запрашивать дополнительные данные.
 *
+* Так как Duplex и Transform потоки оба Readable и Writable, каждый поддерживает два отдельных внутренних
+* буфера.
+* */
+// const server = http.createServer((req, res) => {
+//     let body = '';
+//     req.setEncoding('utf8');
+//     req.on('data', chunk => body += chunk);
+//     req.on('end', () => {
+//         try {
+//             const data = JSON.parse(body);
+//             res.write(typeof data);
+//             res.end();
+//         } catch (err) {
+//            res.statusCode = 400;
+//            return res.end(`error: ${err.message}`);
+//         }
+//     });
+// }).listen(3000);
+
+/*
+* Writable потоки предоставляют такие методы, как write(), end() которые используются для записи данных в поток.
+* Readable, Writable потоки используют EventEmitter API для уведомления приложения, когда данные буду доступны из потока.
+* Duplex, Transform потоки оба Readable, Writable.
+* */
+
+
+/*
+* Потоки используются в:
+* http request
+* http response
+* fs write stream
+* zlib stream
+* crypto stream
+* TCP sockets
+* child process stdin
+* */
+
+
+/*
+* Class: stream.Writable
+*
+* event: close - событие вызывается, когда поток закрывается. Событие указывает, что нет больше событий.
+* event: drain - когда необходимо возобновить запись данных в поток.
+* event: error - если при записи возникнет ошибка. Поток закроется, когда будет произведён вызов события.
+* event: finish - событие сработает после stream.end()
+* event: pipe - когда метод вызовет поток чтения
+* event: unpipe - при вызове stream.unpipe(), вызывается из Readable потока,
+* */
+
+
+/*
+* Readable streams
 * */
