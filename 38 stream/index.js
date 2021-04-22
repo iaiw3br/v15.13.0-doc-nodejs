@@ -86,6 +86,7 @@ const http = require('http');
 
 /*
 * Class: stream.Writable
+* Class: stream.Writable
 *
 * event: close - событие вызывается, когда поток закрывается. Событие указывает, что нет больше событий.
 * event: drain - когда необходимо возобновить запись данных в поток.
@@ -93,9 +94,4 @@ const http = require('http');
 * event: finish - событие сработает после stream.end()
 * event: pipe - когда метод вызовет поток чтения
 * event: unpipe - при вызове stream.unpipe(), вызывается из Readable потока,
-* */
-
-
-/*
-* Readable streams
 * */
